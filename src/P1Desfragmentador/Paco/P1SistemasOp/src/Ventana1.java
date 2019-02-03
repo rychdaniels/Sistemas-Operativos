@@ -42,7 +42,7 @@ import javax.swing.border.LineBorder;
 public final class Ventana1 extends JFrame implements ActionListener {
 
 	private JButton[][] casilla;//Matriz de botones
-	private final Object[][][] Tablero;//Tablero tridimencional de tres capas (digitos, colores y posicion), Nos servira para manipular todo
+	private final Object[][][] Tablero;//Tablero tridimencional de dos capas (digitos y colores), Nos servira para manipular todo
 	private JButton jbutton1;
 	private JButton jbutton2;
 	private JButton jbutton3;
@@ -66,7 +66,7 @@ public final class Ventana1 extends JFrame implements ActionListener {
 		Random na2 = new Random();
 		int nai, naj;
 		private final Color color;//Color de la primera ilera de colores
-		private int n_digitos = (n*m)/5;//Este valor debe de ser aleatorio por cada color aleatorio entre 1 a (#total de casillas/#de colores)
+		private int n_digitos = na.nextInt((n*m)/5);//Este valor debe de ser aleatorio por cada color aleatorio entre 1 a (#total de casillas/#de colores)
 		/**
 		 * Contsructor de la clase cola_de_Digitos
 		 * @param color: Color de  cada columna
@@ -75,17 +75,57 @@ public final class Ventana1 extends JFrame implements ActionListener {
 		 * La variable i del for que esta dentro del constructor, es la fila
 		 */
 		public cola_de_Digitos(Color color, int digito, int j) {
-			this.color = color;
-			for (int i = 0; i < n_digitos; i++) {
-				nai = na.nextInt(n);
-				naj = na2.nextInt(m);
-				Tablero[0][nai][naj] = digito++;//Se le asigna los digitos por culumna en la capa de digitos
-				casilla[nai][naj].setText(String.valueOf(Tablero[0][nai][naj]));//Esos mismos digitos los tendran los botones
-				Tablero[1][nai][naj] = color;//Se le asigna un color a una columna a la capa de color del tablero
-				casilla[nai][naj].setBackground(color);//Ese color tambien se le asigna al boton
-				casilla[nai][naj].setForeground(Color.BLACK);//color de texto del boton
-				casilla[nai][naj].setBorder(null);
-			}
+			this.color=color;
+			int rn;
+			   int conty = 0,contr = 0,conto = 0,contg = 0,contb = 0,contw = 0;
+			   for (int i = 0; i < 5; i++) {
+					for (int j1 = 0; j1 < 10; j1++) {
+						
+						rn = na.nextInt()%6;
+						while (rn<0){
+							rn = na.nextInt()%6;
+						}
+						System.out.println(rn);
+						/*if (rn==4){
+							System.err.println(contb);
+							++contb;
+							casilla[i][j].setText(""+contb);
+						}*/
+							switch(rn){
+							case 0:
+							casilla[i][j1].setText(String.valueOf (++conty));
+							//Tablero[0][i][j] = conty;//Se le asigna los digitos por culumna en la capa de digitos
+							break;
+							case 1:
+								casilla[i][j1].setText(String.valueOf (++contr));
+								break;
+							case 2:
+								casilla[i][j1].setText(String.valueOf (++conto));
+								break;
+							case 3:
+								casilla[i][j1].setText(String.valueOf (++contg));
+								break;
+							case 4:
+								//casilla[i][j1].setText(String.valueOf (++contb));
+								break;
+							case 5:
+								++contw;
+								//casilla[i][j].setText(String.valueOf (++contw));
+								break;
+							}
+						Color colors = colores[rn];
+						System.out.println(colors);
+						
+						//casilla[i][j1].setText(String.valueOf(Tablero[0][nai][naj]));//Esos mismos digitos los tendran los botones
+						//Tablero[1][nai][naj] = color;//Se le asigna un color a una columna a la capa de color del tablero
+						casilla[i][j1].setBackground(colors);
+						casilla[i][j1].setForeground(Color.BLACK);//color de texto del boton
+						casilla[i][j1].setBorder(new javax.swing.border.LineBorder(Color.BLACK));
+						
+						
+						
+					}
+				}
 		}
 	}// Cierra cola_de_Digitos
 
@@ -103,12 +143,13 @@ public final class Ventana1 extends JFrame implements ActionListener {
 		this.n = n;
 		this.m = m;
 		Tablero = new Object[2][n][m];//Se crean las capas
-		colores = new Color[5];//Se crea una arreglo de colores (una por cada columna)
+		colores = new Color[6];//Se crea una arreglo de colores (una por cada columna)
 		colores[0] = Color.YELLOW;
 		colores[1] = Color.RED;
 		colores[2] = Color.ORANGE;
 		colores[3] = Color.LIGHT_GRAY;
 		colores[4] = Color.blue;
+		colores[5] = Color.WHITE;
 		iniciaComponentes();
 	}
 
@@ -388,7 +429,6 @@ public final class Ventana1 extends JFrame implements ActionListener {
 					if(rb1.isSelected()) {
 						//Una nueva ventana 15X30
 						Ventana1 ventana = new Ventana1(15, 30);
-						ventana.setVisible(true);
 						setVisible(false);
 						
 					}else if (rb2.isSelected()) {
